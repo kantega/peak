@@ -1,7 +1,12 @@
-package vis.servlet;
+package peak;
 
-import vis.servlet.response.ResponseBuilder;
 
+import peak.response.ResponseBuilder;
+
+
+/**
+ * Responders handle the requests, and produce ResponseBuilders.
+ */
 public abstract class Responder
 {
 
@@ -17,7 +22,7 @@ public abstract class Responder
     public abstract ResponseBuilder run(final HandlerContext context);
 
     /**
-     * A simple app wrapping a responsehandler. Does not use any information in the context.
+     * A simple responder wrapping a responsehandler. Does not use any information in the context.
      * @author atlosm
      *
      */

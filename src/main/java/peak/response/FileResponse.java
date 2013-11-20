@@ -1,11 +1,10 @@
-package vis.servlet.response;
+package peak.response;
 
-import java.io.InputStream;
-import java.io.OutputStream;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import vis.servlet.response.ResponseBuilder;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * A file response, responding with the file with the given name. The file is fetched from the classpath, not the filesystem.

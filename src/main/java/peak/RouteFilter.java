@@ -1,4 +1,4 @@
-package vis.servlet;
+package peak;
 
 import fj.F;
 import fj.F2;
@@ -6,136 +6,147 @@ import fj.P2;
 import fj.Unit;
 import fj.data.List;
 import fj.data.Option;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import vis.servlet.request.RequestMatcher;
-import vis.servlet.request.UrlParam;
-import vis.util.Action;
+import peak.request.RequestMatcher;
+import peak.request.UrlParam;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 /**
  * The routefilter is a superclass/DSL for servletfilters that answer to some httpservletrequest.
- * @author atlosm
  *
+ * @author atlosm
  */
 public abstract class RouteFilter implements Filter {
 
-	private static final Logger logger = LoggerFactory.getLogger(RouteFilter.class);
-	
-	private List<P2<RequestMatcher,Responder>> handlers;
+    private static final Logger logger = LoggerFactory.getLogger( RouteFilter.class );
 
-	public void destroy() {
+    private List<P2<RequestMatcher, Responder>> handlers;
 
-	}
+    public void destroy() {
 
-	/**
-	 * Part of the servlet API
-	 */
-	public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
-		final HttpServletRequest httpReq = (HttpServletRequest) request;
-		final HttpServletResponse httpRes = (HttpServletResponse) response;
+    }
 
-        logger.debug("Matching request "+httpReq.getMethod()+" - " +httpReq.getRequestURL());
+    /**
+     * Part of the servlet API
+     */
+    public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain) throws IOException, ServletException {
+        final HttpServletRequest httpReq = (HttpServletRequest) request;
+        final HttpServletResponse httpRes = (HttpServletResponse) response;
 
-        Option<Responder> handler = handlers.foldLeft(new F2<Option<Responder>, P2<RequestMatcher,Responder>, Option<Responder>>() {
-			public Option<Responder> f(Option<Responder> found, P2<RequestMatcher,Responder> current) {
-				if (found.isSome())
-					return found;
-				else if (current._1().matches(httpReq))
-					return Option.some(current._2());
-				else
-					return Option.none();
-			}
-		}, Option.<Responder> none());
+        logger.debug( "Matching request " + httpReq.getMethod() + " - " + httpReq.getRequestURL() );
 
-		Action<Unit> action = handler.option(invokeChain(request, response, chain), runResponder(httpReq, httpRes));
+        Option<Responder> handler =
 
-		action.execute();
-	}
+                handlers.foldLeft(
+                        new F2<Option<Responder>, P2<RequestMatcher, Responder>, Option<Responder>>() {
+                            public Option<Responder> f(Option<Responder> found, P2<RequestMatcher, Responder> current) {
+                                if (found.isSome())
+                                    return found;
+                                else if (current._1().matches( httpReq ))
+                                    return Option.some( current._2() );
+                                else
+                                    return Option.none();
+                            }
+                        }, Option.<Responder>none() );
 
-	/**
-	 * Part of the servlet API
-	 */
-	public void init(FilterConfig fc) throws ServletException {
-		RouteBuilder builder = init(RouteBuilder.create(), fc);
-		handlers = builder.getHandlers().reverse();
-		for(P2<RequestMatcher,Responder> handler:handlers){
-			logger.info("Registered "+handler.toString());
-		}
-	}
-	
-	/**
-	 * Creates an url param with the given name. The UrlParam object contains functions to extract a named param from the url when give a context.
-	 * Part of the DSL
-	 * @param name
-	 * @return
-	 */
-	public UrlParam param(String name){
-		return new UrlParam(name);
-	}
+        Action<Unit> action =
+                handler.option( invokeChain( request, response, chain ), runResponder( httpReq, httpRes ) );
 
-	/**
-	 * Action that calls invokeChain
-	 * @param request
-	 * @param response
-	 * @param chain
-	 * @return
-	 */
-	private Action<Unit> invokeChain(final ServletRequest request, final ServletResponse response, final FilterChain chain){
-		return new Action<Unit>() {
-			public Unit execute() {
-				try {
-					chain.doFilter(request, response);
-				} catch (Exception e) {
-					e.printStackTrace(System.err);
-				}
-				return Unit.unit();
-			}
-		};
-	}
-	
-	/**
-	 * Action that executes the Responder that responds to the request.
-	 * @param request
-	 * @param response
-	 * @return
-	 */
-	private F<Responder, Action<Unit>> runResponder(final HttpServletRequest request, final HttpServletResponse response) {
-		return new F<Responder, Action<Unit>>() {
-			public Action<Unit> f(final Responder responder) {
-				return new Action<Unit>() {
-					public Unit execute() {
-						try {
-							request.setCharacterEncoding("UTF-8");
-						} catch (UnsupportedEncodingException e) {
-							logger.error("Usupported encoing",e);
-						}
-						response.setCharacterEncoding("UTF-8");
-						response.setContentType("application/json");//Default encoding
-						logger.debug("Invoking application " + responder.getClass().getName());
-						responder.run(new HandlerContext(request)).handle(request, response);
-						return Unit.unit();
-					}
-				};
-			}
-		};
-	}
+        action.execute();
+    }
 
-	/**
-	 * The DSL entry point.
-	 * @param builder
-	 * @param config
-	 * @return
-	 */
-	protected abstract RouteBuilder init(RouteBuilder builder, FilterConfig config);
+    /**
+     * Part of the servlet API
+     */
+    public void init(FilterConfig fc) throws ServletException {
+        RouteBuilder builder =
+                init( RouteBuilder.create(), fc );
+
+        handlers =
+                builder.getHandlers().reverse();
+
+        for (P2<RequestMatcher, Responder> handler : handlers) {
+            logger.info( "Registered " + handler.toString() );
+        }
+    }
+
+    /**
+     * Creates an url param with the given name. The UrlParam object contains functions to extract a named param from the url when give a context.
+     * Part of the DSL
+     *
+     * @param name
+     * @return
+     */
+    public UrlParam param(String name) {
+        return new UrlParam( name );
+    }
+
+    /**
+     * Action that calls invokeChain
+     *
+     * @param request
+     * @param response
+     * @param chain
+     * @return
+     */
+    private Action<Unit> invokeChain(final ServletRequest request, final ServletResponse response, final FilterChain chain) {
+        return new Action<Unit>() {
+            public Unit execute() {
+                try {
+                    chain.doFilter( request, response );
+                } catch (Exception e) {
+                    e.printStackTrace( System.err );
+                }
+                return Unit.unit();
+            }
+        };
+    }
+
+    /**
+     * Action that executes the Responder that responds to the request.
+     *
+     * @param request
+     * @param response
+     * @return
+     */
+    private F<Responder, Action<Unit>> runResponder(final HttpServletRequest request, final HttpServletResponse response) {
+        return new F<Responder, Action<Unit>>() {
+            public Action<Unit> f(final Responder responder) {
+                return new Action<Unit>() {
+                    public Unit execute() {
+                        try {
+                            request.setCharacterEncoding( "UTF-8" );
+                        } catch (UnsupportedEncodingException e) {
+                            logger.error( "Usupported encoing", e );
+                        }
+                        response.setCharacterEncoding( "UTF-8" );
+                        response.setContentType( "application/json" );//Default encoding
+                        logger.debug( "Invoking application " + responder.getClass().getName() );
+                        responder.run( new HandlerContext( request ) ).handle( request, response );
+                        return Unit.unit();
+                    }
+                };
+            }
+        };
+    }
+
+    /**
+     * The DSL entry point.
+     *
+     * @param builder
+     * @param config
+     * @return
+     */
+    protected abstract RouteBuilder init(RouteBuilder builder, FilterConfig config);
+
+    private static abstract class Action<A>{
+        public abstract A execute();
+    }
 
 }

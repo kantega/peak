@@ -1,18 +1,15 @@
-package vis.servlet.request;
+package peak.request;
 
 import fj.F;
 import fj.Ord;
-import fj.data.List;
-import fj.data.Option;
-import fj.data.TreeMap;
-import fj.data.Validation;
+import fj.data.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.Part;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.Part;
-import vis.util.Lists;
 
 /**
  * A wrapper around a HttpServletRequest.
@@ -29,7 +26,7 @@ public class Request {
 	}
 
 	public TreeMap<String, List<String>> getParameters() {
-		return TreeMap.fromMutableMap(Ord.stringOrd, underlying.getParameterMap()).map(Lists.<String> JavaArray_List());
+		return TreeMap.fromMutableMap(Ord.stringOrd, underlying.getParameterMap()).map( Array.<String>wrap().andThen( Conversions.<String>Array_List() ));
 	}
 
 	public Option<String> getParameter(final String name) {

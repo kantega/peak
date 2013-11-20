@@ -1,6 +1,7 @@
-package vis.servlet.request;
+package peak.request;
 
 import fj.data.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -17,7 +18,7 @@ public class CompositeMatcher extends RequestMatcher
 		this.matchers = matchers;
 	}
 
-	public static CompositeMatcher and(RequestMatcher ...matchers){
+	public static CompositeMatcher and(RequestMatcher...matchers){
 		return new CompositeMatcher(List.list(matchers));
 	}
 	

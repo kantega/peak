@@ -1,4 +1,4 @@
-package vis.servlet.response;
+package peak.response;
 
 /**
  * An informal url

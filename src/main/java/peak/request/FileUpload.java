@@ -1,4 +1,4 @@
-package vis.servlet.request;
+package peak.request;
 
 /**
  * Contains the file upload bytes

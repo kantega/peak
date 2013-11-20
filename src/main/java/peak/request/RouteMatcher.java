@@ -1,9 +1,10 @@
-package vis.servlet.request;
+package peak.request;
 
+import peak.FilterUtils;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 import java.util.Map.Entry;
-import javax.servlet.http.HttpServletRequest;
-import vis.servlet.FilterUtils;
 
 /**
  * Matches a request based on the give route.
@@ -26,7 +27,7 @@ public class RouteMatcher extends RequestMatcher
 	
 	@Override
 	public Boolean f(HttpServletRequest req) {
-		String path = FilterUtils.getRelativePath(req);
+		String path = FilterUtils.getRelativePath( req );
 		boolean match =  route.matches(path);
 		if(match){
 			Map<String,String> params = route.getParams(path);

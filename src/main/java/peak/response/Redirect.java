@@ -1,11 +1,10 @@
-package vis.servlet.response;
+package peak.response;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
  * Redirects
- * @author atlosm
  *
  */
 public class Redirect extends ResponseBuilder

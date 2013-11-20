@@ -1,14 +1,9 @@
-package vis.servlet;
+package peak;
 
 import fj.P;
 import fj.P2;
 import fj.data.List;
-import vis.servlet.request.CompositeMatcher;
-import vis.servlet.request.HttpMethod;
-import vis.servlet.request.MethodMatcher;
-import vis.servlet.request.RequestMatcher;
-import vis.servlet.request.Route;
-import vis.servlet.request.RouteMatcher;
+import peak.request.*;
 
 /**
  * DSL for building routes
@@ -41,7 +36,7 @@ public class RouteBuilder
 
     public HandleType byMethod(HttpMethod method, String route)
     {
-        return match(CompositeMatcher.and(new MethodMatcher(method), new RouteMatcher(new Route(route))));
+        return match( CompositeMatcher.and( new MethodMatcher( method ), new RouteMatcher( new Route( route ) ) ));
     }
 
     public HandleType get(String route)

@@ -1,12 +1,11 @@
-package vis.servlet.response;
+package peak.response;
 
-import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * A string response
- * @author atlosm
  *
  */
 public class StringResponse extends ResponseBuilder

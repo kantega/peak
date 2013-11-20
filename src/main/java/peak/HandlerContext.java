@@ -1,11 +1,12 @@
-package vis.servlet;
+package peak;
 
 import fj.F;
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import vis.servlet.request.Request;
+import peak.request.Request;
+
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * The context for the web handlers. It contains typesafe getters and setter to the servlet context, the httprequest wrapped in

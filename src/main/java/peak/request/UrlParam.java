@@ -1,7 +1,7 @@
-package vis.servlet.request;
+package peak.request;
 
 import fj.data.Option;
-import vis.servlet.HandlerContext;
+import peak.HandlerContext;
 
 /**
  * Part of the DSL for extracting named parameters from an url.

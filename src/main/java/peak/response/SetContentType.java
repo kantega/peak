@@ -1,11 +1,10 @@
-package vis.servlet.response;
+package peak.response;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
  * Sets the content type of the response to the given type.
- * @author atlosm
  *
  */
 public class SetContentType extends ResponseBuilder

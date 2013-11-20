@@ -1,4 +1,4 @@
-package vis.servlet.request;
+package peak.request;
 
 public enum Protocol {
 	Http,Https;

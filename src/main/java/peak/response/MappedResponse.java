@@ -1,22 +1,23 @@
-package vis.servlet.response;
+package peak.response;
 
 import fj.F;
-import java.io.IOException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
- * Converts an object to JSon with the given mapper and responds the Json data as a string.
+ * Converts an object to a string representation with the given mapper. Useful for json responsebuilders.
  * @author atlosm
  *
  */
-public class JsonResponse<T> extends ResponseBuilder
+public class MappedResponse<T> extends ResponseBuilder
 {
 
 	private final T value;
 	private final F<T,String> mapper;
 	
-	public JsonResponse(T value,F<T,String> mapper) {
+	public MappedResponse(T value,F<T,String> mapper) {
 		this.value = value;
 		this.mapper = mapper;
 	}

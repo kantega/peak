@@ -1,7 +1,8 @@
-package vis.servlet.request;
+package peak.request;
+
+import fj.F;
 
 import javax.servlet.http.HttpServletRequest;
-import vis.util.Pred;
 
 /**
  * Interface for all requestmatchers. A requestmatcher matches an incoming request and yields a Boolean based on a check. The
@@ -9,7 +10,7 @@ import vis.util.Pred;
  *
  * @author atlosm
  */
-public abstract class RequestMatcher extends Pred<HttpServletRequest>
+public abstract class RequestMatcher extends F<HttpServletRequest,Boolean>
 {
     public boolean matches(HttpServletRequest request)
     {
