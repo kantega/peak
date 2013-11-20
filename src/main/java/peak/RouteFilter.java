@@ -122,13 +122,16 @@ public abstract class RouteFilter implements Filter {
                     public Unit execute() {
                         try {
                             request.setCharacterEncoding( "UTF-8" );
+                            response.setCharacterEncoding( "UTF-8" );
+                            response.setContentType( "application/json" );//Default encoding
+                            logger.debug( "Invoking application " + responder.getClass().getName() );
+                            responder.run( new HandlerContext( request ) ).handle( request, response );
+
                         } catch (UnsupportedEncodingException e) {
-                            logger.error( "Usupported encoing", e );
+                            logger.error( "Unsupported encoding", e );
+                        } catch (Exception e) {
+                            logger.error("Unhandled exception in responder for"+request.getRequestURL(),e);
                         }
-                        response.setCharacterEncoding( "UTF-8" );
-                        response.setContentType( "application/json" );//Default encoding
-                        logger.debug( "Invoking application " + responder.getClass().getName() );
-                        responder.run( new HandlerContext( request ) ).handle( request, response );
                         return Unit.unit();
                     }
                 };
