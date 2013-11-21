@@ -29,8 +29,8 @@ public class HandlerContext {
         };
     }
 
-    public static void putInServletContext(Class<?> c, Object value, ServletContext context) {
-        putInServletContext( c.getName(), value, context );
+    public static void putInServletContext(Object value, ServletContext context) {
+        putInServletContext( value.getClass().getName(), value, context );
     }
 
     public static void putInServletContext(String name, Object value, ServletContext context) {
