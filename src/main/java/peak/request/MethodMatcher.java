@@ -21,7 +21,7 @@ public class MethodMatcher extends RequestMatcher
 	}
 
 	public String toString() {
-		return "MethodMatcher [method=" + method + "]";
+		return "match(method=" + method + ")";
 	}
 
 }

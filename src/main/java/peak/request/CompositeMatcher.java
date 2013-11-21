@@ -32,7 +32,7 @@ public class CompositeMatcher extends RequestMatcher
 
 	@Override
 	public String toString() {
-		return "CompositeMatcher [" + matchers + "]";
+		return "Match(" + matchers + ")";
 	}
 
 }

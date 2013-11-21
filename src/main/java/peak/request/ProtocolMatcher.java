@@ -22,7 +22,7 @@ public class ProtocolMatcher extends RequestMatcher
 
 	@Override
 	public String toString() {
-		return "ProtocolMatcher [protocol=" + protocol + "]";
+		return "match(protocol=" + protocol + ")";
 	}
 
 }

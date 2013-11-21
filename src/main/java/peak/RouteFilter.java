@@ -72,7 +72,7 @@ public abstract class RouteFilter implements Filter {
                 builder.getHandlers().reverse();
 
         for (P2<RequestMatcher, Responder> handler : handlers) {
-            logger.info( "Registered " + handler.toString() );
+            logger.info( "Registered " + handler._1().toString() +":"+handler._2().getClass().getName() );
         }
     }
 
