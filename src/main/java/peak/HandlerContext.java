@@ -1,8 +1,7 @@
 package peak;
 
 import fj.F;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import fj.data.Option;
 import peak.request.Request;
 
 import javax.servlet.ServletContext;
@@ -14,47 +13,53 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author atlosm
  */
-public class HandlerContext
-{
+public class HandlerContext {
+
     public final HttpServletRequest request;
 
-    private final static Logger logger = LoggerFactory.getLogger(HandlerContext.class);
-
-    public HandlerContext(HttpServletRequest request)
-    {
+    public HandlerContext(HttpServletRequest request) {
         this.request = request;
     }
 
-    public <T> T get(final Class<T> c)
-    {
-        return HandlerContext.getFromServletContext(c, request.getServletContext());
-    }
-
-    public Request getRequest()
-    {
-        return new Request(request);
-    }
-
-    public static <T> F<HandlerContext, T> get_(final Class<T> c)
-    {
-        return new F<HandlerContext, T>()
-        {
-            public T f(HandlerContext ac)
-            {
-                return ac.get(c);
+    public static <T> F<HandlerContext, Option<T>> get_(final Class<T> c) {
+        return new F<HandlerContext, Option<T>>() {
+            public Option<T> f(HandlerContext ac) {
+                return ac.get( c );
             }
         };
     }
 
-    public static void putInServletContext(Class<?> c, Object value, ServletContext context)
-    {
-        context.setAttribute(c.getName(), value);
-        logger.info("Setting " + c.getName() + " -> " + value);
+    public static void putInServletContext(Class<?> c, Object value, ServletContext context) {
+        putInServletContext( c.getName(), value, context );
     }
 
-    public static <T> T getFromServletContext(Class<T> c, ServletContext sc)
-    {
-        logger.info("Requesting " + c.getName());
-        return c.cast(sc.getAttribute(c.getName()));
+    public static void putInServletContext(String name, Object value, ServletContext context) {
+        context.setAttribute( name, value );
+    }
+
+    public static <T> Option<T> getFromServletContext(Class<T> c, ServletContext sc) {
+        return getFromServletContext( c, c.getName(), sc );
+    }
+
+    public static <T> Option<T> getFromServletContext(final Class<T> c, String name, ServletContext sc) {
+        return Option
+                .fromNull( sc.getAttribute( name ) )
+                .bind( new F<Object, Option<T>>() {
+                    @Override public Option<T> f(Object o) {
+                        try {
+                            return Option.some( c.cast( o ) );
+                        } catch (Exception e) {
+                            return Option.none();
+                        }
+                    }
+                } );
+    }
+
+    public <T> Option<T> get(final Class<T> c) {
+        return HandlerContext.getFromServletContext( c, request.getServletContext() );
+    }
+
+    public Request getRequest() {
+        return new Request( request );
     }
 }
