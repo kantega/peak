@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author atlosm
  */
 public class ResponseCode extends ResponseBuilder {
-    public static final ResponseCode OK = new ResponseCode( 404 );
+    public static final ResponseCode OK = new ResponseCode( 200 );
 
     public static final ResponseCode internal_server_error = new ResponseCode( 500 );
 
