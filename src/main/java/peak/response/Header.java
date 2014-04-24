@@ -16,7 +16,7 @@ public class Header extends ResponseBuilder {
         this.value = value;
     }
 
-    @Override public void handle(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    @Override public void handle(HttpServletRequest request, HttpServletResponse response) {
         response.setHeader( name, value );
     }
 }

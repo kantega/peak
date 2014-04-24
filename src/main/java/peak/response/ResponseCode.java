@@ -13,6 +13,8 @@ public class ResponseCode extends ResponseBuilder {
 
     public static final ResponseCode internal_server_error = new ResponseCode( 500 );
 
+    public static final ResponseCode bad_request = new ResponseCode( 400 );
+
     private final int code;
 
     public ResponseCode(int code) {
