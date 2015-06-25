@@ -1,6 +1,7 @@
 package peak.request;
 
 import fj.F;
+import fj.F1Functions;
 import fj.Ord;
 import fj.data.*;
 
@@ -26,7 +27,7 @@ public class Request {
 	}
 
 	public TreeMap<String, List<String>> getParameters() {
-		return TreeMap.fromMutableMap(Ord.stringOrd, underlying.getParameterMap()).map( Array.<String>wrap().andThen( Conversions.<String>Array_List() ));
+		return TreeMap.fromMutableMap(Ord.stringOrd, underlying.getParameterMap()).map( F1Functions.andThen(Array.<String>wrap(),Conversions.<String>Array_List() ));
 	}
 
 	public Option<String> getParameter(final String name) {

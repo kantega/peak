@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author atlosm
  */
-public abstract class RequestMatcher extends F<HttpServletRequest,Boolean>
+public abstract class RequestMatcher implements F<HttpServletRequest,Boolean>
 {
     public boolean matches(HttpServletRequest request)
     {
