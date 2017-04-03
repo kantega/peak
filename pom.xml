@@ -10,7 +10,7 @@
     </scm>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jetty.version>9.3.10.v20160621</jetty.version>
+        <jetty.version>9.4.3.v20170317</jetty.version>
         <additionalparam>-Xdoclint:none</additionalparam>
     </properties>
     <build>
