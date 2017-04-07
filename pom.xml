@@ -41,7 +41,7 @@
         </dependency>
         <dependency>
             <groupId>org.functionaljava</groupId>
-            <artifactId>functionaljava</artifactId>
+            <artifactId>functionaljava_1.8</artifactId>
             <version>4.7</version>
         </dependency>
         <dependency>
@@ -66,4 +66,5 @@
             </url>
         </snapshotRepository>
     </distributionManagement>
+
 </project>
